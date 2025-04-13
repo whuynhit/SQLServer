@@ -1,16 +1,22 @@
 # Define version and paths
 $SAPasswd = "Password1"
 $SQLVersion = "2022"
-$ISOFile = "D:\Temp\SQLServer$SQLVersion-x64-ENU-Dev.iso"        # ISO file location
-$SQLConfigFile = "D:\Temp\SQLConfig$SQLVersion.ini"       # Config file path
+$SQLEdition = "Dev"        # Edition "Dev" or "Eval"
+$TempPath = "D:\Temp"        # Temp Folder Directory
+$InstanceDir = "D:\Program Files\Microsoft SQL Server"        # SQL Server Instance and Shared Features Directory
+$SharedWowDir = "D:\Program Files (x86)\Microsoft SQL Server"        # SQL Server 32-Bit/x86/wow64 Shared Features Directory
+$ISOFile = "$TempPath\SQLServer$SQLVersion-x64-ENU-$SQLEdition.iso"        # ISO file location
+$SQLConfigFile = "$TempPath\SQLConfig$SQLVersion.ini"       # Config file path
+$SSMSInstaller = "https://aka.ms/ssmsfullsetup"        # SSMS Download Link
+$SSMSExe = "$TempPath\SSMS-Setup.exe"                # SSMS Download Path
 $MountDriveLetter = "H:"                             # Assigned drive letter when mounted
 
 # Ensure necessary folders exist
 $RequiredPaths = @(
     # Application and system directories
-    "D:\Temp",
-    "D:\Program Files\Microsoft SQL Server",
-    "D:\Program Files (x86)\Microsoft SQL Server",
+    $TempPath,
+    $InstanceDir,
+    $SharedWowDir,
 
     # Data and log directories
     "E:\TEMPDB",
@@ -98,11 +104,11 @@ INSTANCENAME="MSSQLSERVER"
 
 ; Specify the root installation directory for shared components.  This directory remains unchanged after shared components are already installed. 
 
-INSTALLSHAREDDIR="D:\Program Files\Microsoft SQL Server"
+INSTALLSHAREDDIR="$InstanceDir"
 
 ; Specify the root installation directory for the WOW64 shared components.  This directory remains unchanged after WOW64 shared components are already installed. 
 
-INSTALLSHAREDWOWDIR="D:\Program Files (x86)\Microsoft SQL Server"
+INSTALLSHAREDWOWDIR="$SharedWowDir"
 
 ; Specify the Instance ID for the SQL Server features you have specified. SQL Server directory structure, registry structure, and service names will incorporate the instance ID of the SQL Server instance. 
 
@@ -118,7 +124,7 @@ SQLTELSVCACCT="NT Service\SQLTELEMETRY"
 
 ; Specify the installation directory. 
 
-INSTANCEDIR="D:\Program Files\Microsoft SQL Server"
+INSTANCEDIR="$InstanceDir"
 
 ; Agent account name. 
 
@@ -255,11 +261,17 @@ if (Test-Path $setupPath) {
 # Set-Service -Name "SQLSERVERAGENT" -StartupType Automatic
 
 # Optional: Install SSMS silently
-$SSMSInstaller = "https://aka.ms/ssmsfullsetup"
-$SSMSExe = "D:\Temp\SSMS-Setup.exe"
 Invoke-WebRequest -Uri $SSMSInstaller -OutFile $SSMSExe
 Start-Process -FilePath $SSMSExe -ArgumentList "/install /quiet /norestart" -Wait -NoNewWindow
 
 # Step 4: Dismount ISO
 Write-Output "Dismounting SQL Server ISO from $driveLetter..."
 Dismount-DiskImage -ImagePath $ISOFile
+
+# Delete Temp Folder
+if (Test-Path $TempPath) {
+    Remove-Item -Path $TempPath -Recurse -Force
+    Write-Output "Deleted folder: $TempPath"
+} else {
+    Write-Output "Folder not found: $TempPath"
+}
