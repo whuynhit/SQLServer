@@ -5,11 +5,21 @@ $SQLEdition = "Dev"        # Edition "Dev" or "Eval"
 $TempPath = "D:\Temp"        # Temp Folder Directory
 $InstanceDir = "D:\Program Files\Microsoft SQL Server"        # SQL Server Instance and Shared Features Directory
 $SharedWowDir = "D:\Program Files (x86)\Microsoft SQL Server"        # SQL Server 32-Bit/x86/wow64 Shared Features Directory
-$ISOFile = "$TempPath\SQLServer$SQLVersion-x64-ENU-$SQLEdition.iso"        # ISO file location
+$NetworkISO = "\\WS2022AD\Network Share\DBA\ISO\SQLServer$SQLVersion-x64-ENU-$SQLEdition.iso"    # Network Share location of ISO to copy from
+$LocalISO = "$TempPath\SQLServer$SQLVersion-x64-ENU-$SQLEdition.iso"        # Local ISO file location
 $SQLConfigFile = "$TempPath\SQLConfig$SQLVersion.ini"       # Config file path
 $SSMSInstaller = "https://aka.ms/ssmsfullsetup"        # SSMS Download Link
+$NetworkSSMS = "\\WS2022AD\Network Share\DBA\SSMS\SSMS-Setup.exe"
 $SSMSExe = "$TempPath\SSMS-Setup.exe"                # SSMS Download Path
 $MountDriveLetter = "H:"                             # Assigned drive letter when mounted
+
+# User Accounts to be added to SQL Server
+$DBAAdmins = '"CMV\DBA Admins"'
+$SQLSentrySvc = '"CMV\SqlSentry.Service"'
+$MSAssessSvc = '"CMV\MSAssess.Service"'
+$RubrikSvc = '"CMV\rubriksqlbackupsvc"'
+# Accounts to be assigned SysAdmin permissions for SQL Server
+$SQLSysAdminAcct = "$DBAAdmins $SQLSentrySvc $MSAssessSvc $RubrikSvc"
 
 # Ensure necessary folders exist
 $RequiredPaths = @(
@@ -164,7 +174,7 @@ SQLSVCINSTANTFILEINIT="True"
 
 ; Windows account(s) to provision as SQL Server system administrators. 
 
-SQLSYSADMINACCOUNTS="CMV\DBA Admins" "CMV\SqlSentry.Service" "CMV\MSAssess.Service" "CMV\rubriksqlbackupsvc"
+SQLSYSADMINACCOUNTS=$SQLSysAdminAcct
 
 ; The default is Windows Authentication. Use "SQL" for Mixed Mode Authentication. 
 
@@ -238,6 +248,9 @@ SQLMINMEMORY="0"
 
 "@ | Set-Content -Path $SQLConfigFile
 
+# Copy SQL Server ISO Install from Network Share location to local location
+Copy-Item -Path $NetworkISO -Destination $LocalISO -Force
+
 # Step 2: Mount ISO file
 Write-Output "Mounting SQL Server ISO..."
 $mountResult = Mount-DiskImage -ImagePath $ISOFile -PassThru
@@ -260,8 +273,10 @@ if (Test-Path $setupPath) {
 # Start-Service -Name "SQLSERVERAGENT"
 # Set-Service -Name "SQLSERVERAGENT" -StartupType Automatic
 
-# Optional: Install SSMS silently
-Invoke-WebRequest -Uri $SSMSInstaller -OutFile $SSMSExe
+# Option 1: Install SSMS silently
+#Invoke-WebRequest -Uri $SSMSInstaller -OutFile $SSMSExe
+# Option 2: Copy SSMS-Setup.exe from Network Share location to local location
+Copy-Item -Path $NetworkISO -Destination $SSMSExe -Force
 Start-Process -FilePath $SSMSExe -ArgumentList "/install /quiet /norestart" -Wait -NoNewWindow
 
 # Step 4: Dismount ISO
