@@ -253,7 +253,7 @@ Copy-Item -Path $NetworkISO -Destination $LocalISO -Force
 
 # Step 2: Mount ISO file
 Write-Output "Mounting SQL Server ISO..."
-$mountResult = Mount-DiskImage -ImagePath $ISOFile -PassThru
+$mountResult = Mount-DiskImage -ImagePath $LocalISO -PassThru
 $volume = ($mountResult | Get-Volume)
 $driveLetter = $volume.DriveLetter + ":"
 
@@ -276,12 +276,12 @@ if (Test-Path $setupPath) {
 # Option 1: Install SSMS silently
 #Invoke-WebRequest -Uri $SSMSInstaller -OutFile $SSMSExe
 # Option 2: Copy SSMS-Setup.exe from Network Share location to local location
-Copy-Item -Path $NetworkISO -Destination $SSMSExe -Force
+Copy-Item -Path $NetworkSSMS -Destination $SSMSExe -Force
 Start-Process -FilePath $SSMSExe -ArgumentList "/install /quiet /norestart" -Wait -NoNewWindow
 
 # Step 4: Dismount ISO
 Write-Output "Dismounting SQL Server ISO from $driveLetter..."
-Dismount-DiskImage -ImagePath $ISOFile
+Dismount-DiskImage -ImagePath $LocalISO
 
 # Delete Temp Folder
 if (Test-Path $TempPath) {
