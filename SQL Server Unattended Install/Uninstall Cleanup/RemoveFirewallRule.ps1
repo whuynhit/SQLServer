@@ -1,0 +1,1 @@
+﻿Get-NetFirewallRule -DisplayName "Allow SQL Server TCP 1433" | Remove-NetFirewallRule
