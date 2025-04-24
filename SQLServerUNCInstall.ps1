@@ -55,7 +55,7 @@ New-NetFirewallRule -DisplayName "Allow SQL Server TCP 1433" `
 
 # Generate SQL Server configuration file
 @"
-
+[Config File Here]
 "@ | Set-Content -Path $SQLConfigFile
 
 # Run Unattended SQL Server installation
