@@ -43,8 +43,8 @@ SELECT
                         WHEN windows_sku = 12 THEN 'Windows Server 2016 Datacenter'
                         WHEN windows_sku = 13 THEN 'Windows Server 2019 Standard'
                         WHEN windows_sku = 14 THEN 'Windows Server 2019 Datacenter'
-                        WHEN windows_sku = 79 THEN 'Windows Server 2022 Datacenter Evaluation'
-                        WHEN windows_sku = 80 THEN 'Windows Server 2022 Standard Evaluation'
+                        WHEN windows_sku = 79 THEN 'Windows Server 2022 Standard Evaluation'
+                        WHEN windows_sku = 80 THEN 'Windows Server 2022 Datacenter Evaluation'
                         ELSE 'Windows Server (10.0 based, unknown SKU)'
                     END
                 WHEN '6.3' THEN 'Windows Server 2012 R2'
