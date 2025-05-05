@@ -135,7 +135,7 @@ SQLSVCACCOUNT="NT Service\MSSQLSERVER"
 
 ; Set to "True" to enable instant file initialization for SQL Server service. If enabled, Setup will grant Perform Volume Maintenance Task privilege to the Database Engine Service SID. This may lead to information disclosure as it could allow deleted content to be accessed by an unauthorized principal. 
 
-SQLSVCINSTANTFILEINIT="True"
+SQLSVCINSTANTFILEINIT="False"
 
 ; Windows account(s) to provision as SQL Server system administrators. 
 
