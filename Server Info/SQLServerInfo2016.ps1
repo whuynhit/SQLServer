@@ -1,4 +1,4 @@
-﻿# Define paths
+# Define paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
 $outputCsvPath = "D:\ServerInfo.csv"
 
@@ -39,26 +39,26 @@ SELECT
     END AS SQLVersion,
     SERVERPROPERTY('Edition') AS Edition,
     SERVERPROPERTY('ProductVersion') AS ProductVersion,
-		(
-		SELECT
-			CASE windows_release
-				WHEN '10.0' THEN 
-					CASE 
-						WHEN windows_sku = 8 THEN 'Windows Server 2016 Standard'
-						WHEN windows_sku = 12 THEN 'Windows Server 2016 Datacenter'
-						WHEN windows_sku = 13 THEN 'Windows Server 2019 Standard'
-						WHEN windows_sku = 14 THEN 'Windows Server 2019 Datacenter'
-						WHEN windows_sku = 79 THEN 'Windows Server 2022 Standard Evaluation'
-						WHEN windows_sku = 80 THEN 'Windows Server 2022 Datacenter Evaluation'
-						ELSE 'Windows Server (10.0 based, unknown SKU)'
-					END
-				WHEN '6.3' THEN 'Windows Server 2012 R2'
-				WHEN '6.2' THEN 'Windows Server 2012'
-				WHEN '6.1' THEN 'Windows Server 2008 R2'
-				ELSE 'Unknown Windows Version'
-			END
-		FROM sys.dm_os_windows_info
-	) AS OS_Distribution,
+        (
+        SELECT
+            CASE windows_release
+                WHEN '10.0' THEN 
+                    CASE 
+                        WHEN windows_sku = 8 THEN 'Windows Server 2016 Standard'
+                        WHEN windows_sku = 12 THEN 'Windows Server 2016 Datacenter'
+                        WHEN windows_sku = 13 THEN 'Windows Server 2019 Standard'
+                        WHEN windows_sku = 14 THEN 'Windows Server 2019 Datacenter'
+                        WHEN windows_sku = 79 THEN 'Windows Server 2022 Standard Evaluation'
+                        WHEN windows_sku = 80 THEN 'Windows Server 2022 Datacenter Evaluation'
+                        ELSE 'Windows Server (10.0 based, unknown SKU)'
+                    END
+                WHEN '6.3' THEN 'Windows Server 2012 R2'
+                WHEN '6.2' THEN 'Windows Server 2012'
+                WHEN '6.1' THEN 'Windows Server 2008 R2'
+                ELSE 'Unknown Windows Version'
+            END
+        FROM sys.dm_os_windows_info
+    ) AS OS_Distribution,
 
     (SELECT cpu_count FROM sys.dm_os_sys_info) AS CPUCount,
 
