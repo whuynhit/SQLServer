@@ -1,1 +1,1 @@
-﻿Install-Module SqlServer -Scope CurrentUser
+﻿Install-Module SqlServer -Scope CurrentUser -AllowClobber -Force
