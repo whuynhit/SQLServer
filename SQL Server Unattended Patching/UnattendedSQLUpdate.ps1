@@ -1,8 +1,6 @@
 ﻿# ==========================
 # Unattended SQL Server Update Script
-# For SQL Server
 # ==========================
-
 
 param (
     [string]$SQLVersion = "2022",		# SQL Version
