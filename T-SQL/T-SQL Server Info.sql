@@ -4,7 +4,7 @@ DECLARE @DriveE AS VARCHAR(3) = 'E:\';
 DECLARE @DriveF AS VARCHAR(3) = 'F:\';
 
 SELECT 
-    SERVERPROPERTY('MachineName') AS ServerName,
+    UPPER(CAST(SERVERPROPERTY('MachineName') AS nvarchar(128))) AS [Server Name],
     (SELECT dec.local_net_address FROM sys.dm_exec_connections AS dec WHERE dec.session_id = @@SPID) AS 'IP Address',
     CASE
         WHEN @ProductVersion LIKE '16%' THEN 'SQL Server 2022' 
