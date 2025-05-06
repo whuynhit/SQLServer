@@ -1,4 +1,4 @@
-# Define paths
+﻿# Define paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
 $outputCsvPath = "D:\ServerInfo.csv"
 
@@ -26,7 +26,7 @@ DECLARE @OSDistribution NVARCHAR(512) = (
 );
 
 SELECT 
-    SERVERPROPERTY('MachineName') AS ServerName,
+    UPPER(CAST(SERVERPROPERTY('MachineName') AS nvarchar(128))) AS [Server Name],
     (SELECT dec.local_net_address 
      FROM sys.dm_exec_connections AS dec 
      WHERE dec.session_id = @@SPID) AS [IP Address],
