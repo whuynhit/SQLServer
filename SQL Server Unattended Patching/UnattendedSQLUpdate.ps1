@@ -5,15 +5,15 @@
 param (
     [string]$SQLVersion = "2022",		# SQL Version
     [string]$PatchVersion = "KB5050771",	# Patch Version, could be KB# or CU#, depends on how you name the <patch>.exe
-    [string]$PatchFile = "SQLServer$SQLVersion-$PatchVersion-x64.exe",
+    [string]$PatchFile = "SQLServer$SQLVersion-$PatchVersion-x64.exe",		# Patch file name
     [string]$SourceUpdatePath = "\\WS2022AD\Network Share\DBA\SQL Server Patches\$PatchFile",   # Path to update .exe
     [string]$InstanceName = "MSSQLSERVER",                    # Default instance; change if named
-    [string]$LocalTempPath = "D:\Temp",
-    [string]$DestUpdatePath = "$LocalTempPath\$PatchFile",
+    [string]$LocalTempPath = "D:\Temp",				# Temp folder
+    [string]$DestUpdatePath = "$LocalTempPath\$PatchFile",	# Temporary local path of the patch file
     [switch]$RebootIfRequired                                 # Flag to reboot if update requires it
 )
 
-# Create log folder
+# Create Temp Folder
 if (!(Test-Path $LocalTempPath)) {
     New-Item -ItemType Directory -Path $LocalTempPath -Force
 }
