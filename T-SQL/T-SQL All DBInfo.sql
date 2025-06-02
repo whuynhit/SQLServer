@@ -1,6 +1,7 @@
 DECLARE @DatabaseName NVARCHAR(255)
 DECLARE @SQL NVARCHAR(MAX)
 
+
 -- Step 1: Declare cursor for user databases
 DECLARE db_cursor CURSOR FOR
 SELECT name 
@@ -17,7 +18,19 @@ WHILE @@FETCH_STATUS = 0
 BEGIN
     -- Build dynamic SQL using 3-part naming (db.schema.table)
     SET @SQL = '
-    SELECT ''' + @DatabaseName + ''' AS DatabaseName,
+	DECLARE @ServerName AS VARCHAR(128) = UPPER(CAST(SERVERPROPERTY(''MachineName'') AS nvarchar(128)));
+    SELECT 
+			@ServerName [Server Name], 
+			(SELECT dec.local_net_address
+			FROM sys.dm_exec_connections AS dec
+			WHERE dec.session_id = @@SPID) AS [IP Address],
+			CASE
+			WHEN @ServerName LIKE ''%P[0-9][0-9]%'' THEN ''PRD''
+			WHEN @ServerName LIKE ''%T[0-9][0-9]%'' THEN ''UAT''
+			WHEN @ServerName LIKE ''%D[0-9][0-9]%'' THEN ''DEV''
+			ELSE ''Unknown ENV''
+			END AS ENV,
+			''' + @DatabaseName + ''' AS DatabaseName,
            TABLE_SCHEMA,
            TABLE_NAME,
            COLUMN_NAME,
