@@ -1,3 +1,4 @@
+-- Queries for information of all Columns from all Tables of all User Databases
 DECLARE @DatabaseName NVARCHAR(255)
 DECLARE @SQL NVARCHAR(MAX)
 
