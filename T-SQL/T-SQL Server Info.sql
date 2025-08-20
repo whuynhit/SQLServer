@@ -5,7 +5,7 @@ DECLARE @ProductVersion NVARCHAR(128) = CONVERT(
 DECLARE @DriveE AS VARCHAR(3) = 'E:\';
 DECLARE @DriveF AS VARCHAR(3) = 'F:\';
 
-SELECT UPPER(CAST(SERVERPROPERTY('MachineName') AS nvarchar(128))) AS [Server Name],
+SELECT @ServerName AS [Server Name],
 (SELECT dec.local_net_address
 FROM sys.dm_exec_connections as dec
 WHERE dec.session_id = @@SPID) [IP Address],
