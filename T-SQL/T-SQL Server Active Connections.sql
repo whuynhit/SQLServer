@@ -9,5 +9,4 @@ SELECT
 FROM
 	sys.dm_exec_connections c
 JOIN sys.dm_exec_sessions s
-
 ON c.session_id = s.session_id;
