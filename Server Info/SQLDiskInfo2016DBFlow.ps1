@@ -55,25 +55,25 @@ SERVERPROPERTY('Edition') AS [Edition],
 (SELECT cpu_count FROM sys.dm_os_sys_info) AS [CPU_Count],
 
 -- Disk E, Data Storage
-CAST(SUM(CASE WHEN volume_mount_point = @DiskE
-THEN (total_bytes - available_bytes) END) 
+CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskE
+THEN (total_bytes - available_bytes) END), 0) 
 / 1024.0 / 1024.0/ 1024.0 AS DECIMAL(10,2)) AS [DiskE_UsedSpaceGB],
-CAST(SUM(CASE WHEN volume_mount_point = @DiskE
-THEN (available_bytes) END) 
+CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskE
+THEN (available_bytes) END), 0) 
 / 1024.0 / 1024.0/ 1024.0 AS DECIMAL(10,2)) AS [DiskE_FreeSpaceGB],
-CAST(SUM(CASE WHEN volume_mount_point = @DiskE
-THEN (total_bytes) END) 
+CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskE
+THEN (total_bytes) END), 0) 
 / 1024.0 / 1024.0/ 1024.0 AS DECIMAL(10,2)) AS [DiskE_TotalSpaceGB],
 
 -- Disk F, Data Storage
-CAST(SUM(CASE WHEN volume_mount_point = @DiskF
-THEN (total_bytes - available_bytes) END) 
+CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskF
+THEN (total_bytes - available_bytes) END),0) 
 / 1024.0 / 1024.0/ 1024.0 AS DECIMAL(10,2)) AS [DiskF_UsedSpaceGB],
-CAST(SUM(CASE WHEN volume_mount_point = @DiskF
-THEN (available_bytes) END) 
+CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskF
+THEN (available_bytes) END), 0) 
 / 1024.0 / 1024.0/ 1024.0 AS DECIMAL(10,2)) AS [DiskF_FreeSpaceGB],
-CAST(SUM(CASE WHEN volume_mount_point = @DiskF
-THEN (total_bytes) END) 
+CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskF
+THEN (total_bytes) END), 0) 
 / 1024.0 / 1024.0/ 1024.0 AS DECIMAL(10,2)) AS [DiskF_TotalSpaceGB]
 FROM DiskInfo;
 "@
