@@ -43,6 +43,7 @@ END AS [SQL_Version],
 SERVERPROPERTY('Edition') AS [Edition],
 @ProductVersion AS [Product_Version],
 (SELECT cpu_count FROM sys.dm_os_sys_info) AS [CPU_Count],
+(SELECT total_physical_memory_kb / 1024 FROM sys.dm_os_sys_memory) AS [Memory_MB],
 
 -- Disk E, Data Storage
 CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskE
