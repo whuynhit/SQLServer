@@ -53,6 +53,7 @@ END AS [SQL_Version],
 SERVERPROPERTY('Edition') AS [Edition],
 @ProductVersion AS [Product_Version],
 (SELECT cpu_count FROM sys.dm_os_sys_info) AS [CPU_Count],
+(SELECT total_physical_memory_kb / 1024 FROM sys.dm_os_sys_memory) AS [Memory_MB],
 
 -- Disk E, Data Storage
 CAST(ISNULL(SUM(CASE WHEN volume_mount_point = @DiskE
@@ -99,7 +100,7 @@ INSERT INTO $inventoryTable
  DiskF_UsedSpaceGB, DiskF_FreeSpaceGB, DiskF_TotalSpaceGB, CaptureDate)
 VALUES
 ('$($row.Server_Name)', '$($row.Instance_Name)', '$($row.IP_Address)',
- '$($row.ENV)', '$($row.Location)', '$($row.SQL_Version)', '$($row.Edition)', '$($row.Product_Version)', $($row.CPU_Count),
+ '$($row.ENV)', '$($row.Location)', '$($row.SQL_Version)', '$($row.Edition)', '$($row.Product_Version)', $($row.CPU_Count), $($row.Memory_MB),
  $($row.DiskE_UsedSpaceGB), $($row.DiskE_FreeSpaceGB), $($row.DiskE_TotalSpaceGB),
  $($row.DiskF_UsedSpaceGB), $($row.DiskF_FreeSpaceGB), $($row.DiskF_TotalSpaceGB), GETDATE());
 "@
