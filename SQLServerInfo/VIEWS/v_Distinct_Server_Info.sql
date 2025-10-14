@@ -1,7 +1,7 @@
 -- View version of Distinct Server Info [Tableau Custom Query]
 CREATE VIEW v_Distinct_Server_Info  AS
 (SELECT 
-DISTINCT(Server_Name),
+DISTINCT(Server_Name) AS Server_Name,
 IP_Address,
 ENV,
 Location,
