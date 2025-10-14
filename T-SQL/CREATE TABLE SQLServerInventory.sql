@@ -8,6 +8,7 @@ CREATE TABLE dbo.SQLServerInventory (
     Edition NVARCHAR(128),
     Product_Version NVARCHAR(128),
     CPU_Count INT,
+    Memory_MB INT,
     DiskE_UsedSpaceGB DECIMAL(10,2),
     DiskE_FreeSpaceGB DECIMAL(10,2),
     DiskE_TotalSpaceGB DECIMAL(10,2),
