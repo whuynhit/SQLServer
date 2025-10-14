@@ -95,7 +95,7 @@ Get-Content $serverListPath | ForEach-Object {
                     # Build INSERT for central inventory table
                     $insert = @"
 INSERT INTO $inventoryTable
-(Server_Name, Instance_Name, IP_Address, ENV, Location, SQL_Version, Edition, Product_Version, CPU_Count,
+(Server_Name, Instance_Name, IP_Address, ENV, Location, SQL_Version, Edition, Product_Version, CPU_Count, Memory_MB,
  DiskE_UsedSpaceGB, DiskE_FreeSpaceGB, DiskE_TotalSpaceGB,
  DiskF_UsedSpaceGB, DiskF_FreeSpaceGB, DiskF_TotalSpaceGB, CaptureDate)
 VALUES
