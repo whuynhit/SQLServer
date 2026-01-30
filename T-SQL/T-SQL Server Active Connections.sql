@@ -19,4 +19,5 @@ FROM
 JOIN sys.dm_exec_sessions s
 ON c.session_id = s.session_id
 JOIN sys.databases d
-ON d.database_id = s.database_id;
+ON d.database_id = s.database_id
+ORDER BY login_name;
