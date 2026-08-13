@@ -1,3 +1,5 @@
+-- Optional - run the following to create new subdirectory:
+-- EXEC master.dbo.xp_create_subdir '\\<Server>\<Network Shared Folder>\<Folder>\';
 -- Generate Copy-Only BACKUP command based on existing databases
 DECLARE @location NVARCHAR(256) = '\\<Server>\<Network Shared Folder>\<Folder>\';
 SELECT 
