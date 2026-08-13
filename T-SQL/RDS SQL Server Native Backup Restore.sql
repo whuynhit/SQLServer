@@ -24,3 +24,7 @@ SELECT
 FROM sys.databases
 WHERE database_id > 4 AND name NOT IN ('rdsadmin')
 ORDER BY name;
+
+
+-- Check RDS BACKUP/RESTORE task status
+exec msdb.dbo.rds_task_status;
