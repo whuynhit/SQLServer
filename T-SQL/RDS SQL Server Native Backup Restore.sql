@@ -5,7 +5,7 @@ SELECT
 	CHAR(13) + CHAR(10),
 	'exec msdb.dbo.rds_backup_database',
 	CONCAT('@source_db_name= ''', name, ''','),
-	CONCAT('@s3_arn_to_backup_to=''', @s3_bucket_arn,'/', name, '_copy_only.bak'';')
+	CONCAT('@s3_arn_to_backup_to=''', @s3_bucket_arn,'/', name, '_db_backup.bak'';')
 	)
 FROM sys.databases
 WHERE database_id > 4 AND name NOT IN ('rdsadmin')
@@ -19,7 +19,7 @@ SELECT
 	CHAR(13) + CHAR(10),
 	'exec msdb.dbo.rds_restore_database',
 	CONCAT('@restore_db_name= ''', name, ''','),
-	CONCAT('@s3_arn_to_restore_from=''', @s3_bucket_arn,'/', name, '_copy_only.bak'';')
+	CONCAT('@s3_arn_to_restore_from=''', @s3_bucket_arn,'/', name, '_db_backup.bak'';')
 	)
 FROM sys.databases
 WHERE database_id > 4 AND name NOT IN ('rdsadmin')
