@@ -6,7 +6,7 @@ SELECT
 	CONCAT_WS(
 	CHAR(13) + CHAR(10),
 	CONCAT('BACKUP DATABASE ', name), 
-	CONCAT('TO DISK = ''', @location, name, '_copy_only.bak'''),
+	CONCAT('TO DISK = ''', @location, name, '_db_backup.bak'''),
 	'WITH COPY_ONLY;'
 	)
 FROM sys.databases
