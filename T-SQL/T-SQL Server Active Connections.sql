@@ -9,6 +9,7 @@ SELECT
 	WHERE dec.session_id = @@SPID) AS [IP_Address],
 	c.session_id,
 	c.client_net_address,
+	s.status,
 	s.login_name,
 	d.name AS [database],
 	c.connect_time,
