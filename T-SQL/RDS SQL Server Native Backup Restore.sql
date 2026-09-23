@@ -26,6 +26,19 @@ WHERE database_id > 4 AND name NOT IN ('rdsadmin')
 ORDER BY name;
 
 
+-- Generate DROP DATABASE command based on existing databases in connected RDS Instance
+SELECT 
+	name, database_id,
+	CONCAT(
+	'exec msdb.dbo.rds_drop_database',
+	' N''',
+	name,
+	''';'
+	) AS drop_database_command
+FROM sys.databases
+WHERE name NOT IN ('master', 'model', 'msdb', 'rdsadmin', 'tempdb')
+ORDER BY name;
+
 -- Check RDS BACKUP/RESTORE task status
 exec msdb.dbo.rds_task_status;
 
