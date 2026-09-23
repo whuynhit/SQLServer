@@ -28,3 +28,6 @@ ORDER BY name;
 
 -- Check RDS BACKUP/RESTORE task status
 exec msdb.dbo.rds_task_status;
+
+-- Canceling a task
+exec msdb.dbo.rds_cancel_task @task_id=<ID_number>;
