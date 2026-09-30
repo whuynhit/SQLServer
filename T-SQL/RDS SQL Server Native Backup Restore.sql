@@ -1,5 +1,5 @@
 -- Generate BACKUP (bak file to S3) command based on existing databases from Source RDS. 
-DECLARE @s3_bucket_name NVARCHAR(256) = '<bucket_name>';
+DECLARE @s3_bucket_name NVARCHAR(256) = '<s3_bucket_name>';
 SELECT 
 	CONCAT_WS(
 	CHAR(13) + CHAR(10),
@@ -13,7 +13,7 @@ ORDER BY name;
 
 
 -- Generate RESTORE (from bak file in S3) command based on existing databases from Source. 
-DECLARE @s3_bucket_name NVARCHAR(256) = '<bucket_name>';
+DECLARE @s3_bucket_name NVARCHAR(256) = '<s3_bucket_name>';
 SELECT 
 	CONCAT_WS(
 	CHAR(13) + CHAR(10),
