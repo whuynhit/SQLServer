@@ -35,7 +35,7 @@ ORDER BY d.name;
 "@
 
 # Optional: clear old snapshot
-Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query "TRUNCATE TABLE $inventoryTable;" -TrustServerCertificate
+Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query "TRUNCATE TABLE $inventoryTable;" -Encrypt Mandatory -TrustServerCertificate
 
 # Loop through servers
 Get-Content $serverListPath | ForEach-Object {
@@ -44,7 +44,7 @@ Get-Content $serverListPath | ForEach-Object {
         try {
             Write-Host "Collecting database inventory from $server ..." -ForegroundColor Cyan
 
-            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -TrustServerCertificate -ErrorAction Stop
+            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -Encrypt Mandatory -TrustServerCertificate -ErrorAction Stop
 
             if ($results) {
                 foreach ($row in $results) {
@@ -63,7 +63,7 @@ VALUES
  $([math]::Round([double]$row.Database_SizeGB,2)), 
  GETDATE());
 "@
-                    Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query $insert -TrustServerCertificate
+                    Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query $insert -Encrypt Mandatory -TrustServerCertificate
                 }
             }
         }
