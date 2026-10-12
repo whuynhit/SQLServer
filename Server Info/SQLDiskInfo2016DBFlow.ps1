@@ -80,7 +80,7 @@ FROM DiskInfo;
 "@
 
 # (Optional) Clear old snapshot before new insert
-Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query "TRUNCATE TABLE $inventoryTable;" -TrustServerCertificate
+Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query "TRUNCATE TABLE $inventoryTable;" -Encrypt Mandatory -TrustServerCertificate
 
 # Loop through each server
 Get-Content $serverListPath | ForEach-Object {
@@ -88,7 +88,7 @@ Get-Content $serverListPath | ForEach-Object {
     if ($server -ne "") {
         try {
             # Run query against target SQL Server
-            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -TrustServerCertificate -ErrorAction Stop
+            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -Encrypt Mandatory -TrustServerCertificate -ErrorAction Stop
 
             if ($results) {
                 foreach ($row in $results) {
@@ -105,7 +105,7 @@ VALUES
  $($row.DiskF_UsedSpaceGB), $($row.DiskF_FreeSpaceGB), $($row.DiskF_TotalSpaceGB), GETDATE());
 "@
                     # Insert into central repo
-                    Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query $insert -TrustServerCertificate
+                    Invoke-Sqlcmd -ServerInstance $inventoryDbServer -Database $inventoryDbName -Query $insert -Encrypt Mandatory -TrustServerCertificate
                 }
             }
         }
