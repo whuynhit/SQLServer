@@ -2,7 +2,7 @@
 # Database Inventory Collector - PowerShell
 # ==========================================
 
-# Paths
+# Define Paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
 
 # Central repository
