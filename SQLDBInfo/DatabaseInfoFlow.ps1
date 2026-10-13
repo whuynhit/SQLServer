@@ -12,6 +12,7 @@ $inventoryTable    = "dbo.SQLDatabaseInventory"
 
 # SQL query to get DB info from each server
 $sqlQuery = @"
+-- Queries for List of Database Information on Server
 DECLARE @ServerName NVARCHAR(128) = UPPER(CAST(SERVERPROPERTY('MachineName') AS NVARCHAR(128)));
 DECLARE @InstanceName NVARCHAR(128) = UPPER(CAST(SERVERPROPERTY('ServerName') AS NVARCHAR(128)));
 
