@@ -1,4 +1,8 @@
-﻿# Define paths
+# ====================================================================
+# Check Instant File Initialization Enabled Status Report - PowerShell
+# ====================================================================
+
+ # Define paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
 $outputCsvPath = "D:\InstantFileInitReport.csv"
 
@@ -22,7 +26,7 @@ Get-Content $serverListPath | ForEach-Object {
     $server = $_.Trim()
     if ($server -ne "") {
         try {
-            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -TrustServerCertificate -ErrorAction Stop
+            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -Encrypt Mandatory -TrustServerCertificate -ErrorAction Stop
 
             if ($results) {
                 if (-Not (Test-Path $outputCsvPath)) {
