@@ -17,7 +17,7 @@ Get-Content $serverListPath | ForEach-Object {
     $server = $_.Trim()
     if ($server -ne "") {
         try {
-            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -TrustServerCertificate -ErrorAction Stop
+            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -Encrypt Mandatory -TrustServerCertificate -ErrorAction Stop
 
             if ($results) {
                 if (-Not (Test-Path $outputCsvPath)) {
