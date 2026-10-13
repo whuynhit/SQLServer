@@ -1,4 +1,8 @@
-﻿# Define paths
+# ===========================================
+# SQL Server Info Export - PowerShell
+# ===========================================
+
+# Define paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
 $outputCsvPath = "D:\ServerInfo.csv"
 
