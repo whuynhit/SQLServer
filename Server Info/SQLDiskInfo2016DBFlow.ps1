@@ -1,3 +1,7 @@
+# ===========================================
+# Database Server Info Collector - PowerShell
+# ===========================================
+
 # Define paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
 
@@ -87,6 +91,7 @@ Get-Content $serverListPath | ForEach-Object {
     $server = $_.Trim()
     if ($server -ne "") {
         try {
+			Write-Host "Collecting database server info from $server ..." -ForegroundColor Cyan
             # Run query against target SQL Server
             $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -Encrypt Mandatory -TrustServerCertificate -ErrorAction Stop
 
