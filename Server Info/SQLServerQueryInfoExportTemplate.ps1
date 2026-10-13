@@ -1,6 +1,6 @@
-# ===========================================
-# SQL Server Info Export - PowerShell
-# ===========================================
+# ==================================================
+# SQL Server Query Info Export Template - PowerShell
+# ==================================================
 
 # Define paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
