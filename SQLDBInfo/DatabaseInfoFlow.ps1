@@ -44,6 +44,7 @@ Get-Content $serverListPath | ForEach-Object {
         try {
             Write-Host "Collecting database inventory from $server ..." -ForegroundColor Cyan
 
+            # Run query against target SQL Server
             $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -Encrypt Mandatory -TrustServerCertificate -ErrorAction Stop
 
             if ($results) {
