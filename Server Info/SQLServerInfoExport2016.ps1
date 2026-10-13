@@ -1,4 +1,9 @@
-﻿# Define paths
+# ===========================================
+# SQL Server Info Export - PowerShell
+# Works for SQL Server 2016 or Later
+# ===========================================
+
+# Define paths
 $serverListPath = "N:\Shares\Network Share\DBA\WS2022AD\servers.txt"
 $outputCsvPath = "D:\ServerInfo.csv"
 
@@ -108,7 +113,7 @@ Get-Content $serverListPath | ForEach-Object {
     $server = $_.Trim()
     if ($server -ne "") {
         try {
-            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -TrustServerCertificate -ErrorAction Stop
+            $results = Invoke-Sqlcmd -ServerInstance $server -Query $sqlQuery -Encrypt Mandatory -TrustServerCertificate -ErrorAction Stop
 
             if ($results) {
                 if (-Not (Test-Path $outputCsvPath)) {
