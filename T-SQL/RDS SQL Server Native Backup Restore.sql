@@ -4,8 +4,8 @@ SELECT
 	CONCAT_WS(
 	CHAR(13) + CHAR(10),
 	'exec msdb.dbo.rds_backup_database',
-	CONCAT('@source_db_name= ''', name, ''','),
-	CONCAT('@s3_arn_to_backup_to=''arn:aws:s3:::', @s3_bucket_name,'/', name, '_db_backup.bak'';')
+	CONCAT('@source_db_name = ''', name, ''','),
+	CONCAT('@s3_arn_to_backup_to = ''arn:aws:s3:::', @s3_bucket_name,'/', name, '_db_backup.bak'';')
 	) AS [BACKUP RDS Databases Commands]
 FROM sys.databases
 WHERE database_id > 4 AND name NOT IN ('rdsadmin')
@@ -18,8 +18,8 @@ SELECT
 	CONCAT_WS(
 	CHAR(13) + CHAR(10),
 	'exec msdb.dbo.rds_restore_database',
-	CONCAT('@restore_db_name= ''', name, ''','),
-	CONCAT('@s3_arn_to_restore_from=''arn:aws:s3:::', @s3_bucket_name,'/', name, '_db_backup.bak'';')
+	CONCAT('@restore_db_name = ''', name, ''','),
+	CONCAT('@s3_arn_to_restore_from = ''arn:aws:s3:::', @s3_bucket_name,'/', name, '_db_backup.bak'';')
 	) AS [RESTORE RDS Databases from S3 Commands]
 FROM sys.databases
 WHERE database_id > 4 AND name NOT IN ('rdsadmin')
@@ -43,4 +43,4 @@ ORDER BY name;
 exec msdb.dbo.rds_task_status;
 
 -- Canceling a task
-exec msdb.dbo.rds_cancel_task @task_id=<ID_number>;
+exec msdb.dbo.rds_cancel_task @task_id = <ID_number>;
