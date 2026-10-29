@@ -6,7 +6,7 @@ SELECT
 	'exec msdb.dbo.rds_backup_database',
 	CONCAT('@source_db_name= ''', name, ''','),
 	CONCAT('@s3_arn_to_backup_to=''arn:aws:s3:::', @s3_bucket_name,'/', name, '_db_backup.bak'';')
-	)
+	) AS [BACKUP RDS Databases Commands]
 FROM sys.databases
 WHERE database_id > 4 AND name NOT IN ('rdsadmin')
 ORDER BY name;
@@ -20,7 +20,7 @@ SELECT
 	'exec msdb.dbo.rds_restore_database',
 	CONCAT('@restore_db_name= ''', name, ''','),
 	CONCAT('@s3_arn_to_restore_from=''arn:aws:s3:::', @s3_bucket_name,'/', name, '_db_backup.bak'';')
-	)
+	) AS [RESTORE RDS Databases from S3 Commands]
 FROM sys.databases
 WHERE database_id > 4 AND name NOT IN ('rdsadmin')
 ORDER BY name;
@@ -34,7 +34,7 @@ SELECT
 	' N''',
 	name,
 	''';'
-	) AS drop_database_command
+	) AS [DROP RDS Databases Commands]
 FROM sys.databases
 WHERE name NOT IN ('master', 'model', 'msdb', 'rdsadmin', 'tempdb')
 ORDER BY name;
