@@ -8,7 +8,7 @@ SELECT
 	CONCAT('BACKUP DATABASE ', '[', name, ']'), 
 	CONCAT('TO DISK = ''', @backup_dir, '\', name, '_db_backup.bak'''),
 	'WITH COPY_ONLY;'
-	)
+	) AS [BACKUP DATABASE Commands]
 FROM sys.databases
 WHERE database_id > 4
 ORDER BY name;
