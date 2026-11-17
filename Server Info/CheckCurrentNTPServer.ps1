@@ -1,35 +1,41 @@
-# 1. Define input and output file paths
-$ServerList = "D:\servers.txt"
-$OutputCsv  = "D:\\NTP_Audit_Report.csv"
+# 1. Define your input and output file paths
+$ServerListPath = "D:\servers.txt"
+$CsvOutputPath  = "D:\NTP_Audit_Results.csv"
 
-# 2. Read server names (ignoring any blank lines)
-$Servers = Get-Content -Path $ServerList | Where-Object { $_.Trim() -ne "" }
+# 2. Configure PowerShell Remoting timeouts
+$SessionOption = New-PSSessionOption `
+    -OpenTimeout 2000 `
+    -OperationTimeout 15000
 
-# 3. Loop through each server, display status, and collect info
+# 3. Read the server list
+$Servers = Get-Content -Path $ServerListPath |
+    Where-Object { $_.Trim() -ne "" } |
+    ForEach-Object { $_.Trim() }
+
+# 4. Query each server remotely
 $Results = foreach ($Server in $Servers) {
-    $Server = $Server.Trim()
-    Write-Host "Collecting database server info from $Server ..." -ForegroundColor Cyan
+    try {
+        Write-Host "Collecting database server info from $Server ..." -ForegroundColor Cyan
 
-    Invoke-Command -ComputerName $Server -ErrorAction SilentlyContinue -ScriptBlock {
-        $RegPath = "HKLM:\SYSTEM\CurrentControlSet\Services\W32Time\Parameters"
-        $Params  = Get-ItemProperty -Path $RegPath -ErrorAction SilentlyContinue
-        
-        # Capture active source and clean up whitespace
-        $Source = (w32tm /query /source 2>$null)
-        if ($Source) { $Source = $Source.Trim() } else { $Source = "Service Stopped / Unreachable" }
+        $Source = Invoke-Command -ComputerName $Server -ScriptBlock {
+            (w32tm /query /source).Trim()
+        } -SessionOption $SessionOption -ErrorAction Stop
 
         [PSCustomObject]@{
-            Hostname     = $env:COMPUTERNAME
-            SyncType     = $Params.Type
-            NtpServer    = $Params.NtpServer
-            ActiveSource = $Source
-            ServiceState = (Get-Service w32time).Status
+            Hostname  = $Server
+            Status    = "Success"
+            NTPSource = $Source
         }
+    }
+    catch {
+        Write-Warning "Failed to connect to $Server`: $_"
+        continue
     }
 }
 
-# 4. Clean up PowerShell remoting metadata and export to CSV
-$Results | Select-Object Hostname, SyncType, NtpServer, ActiveSource, ServiceState |
-    Export-Csv -Path $OutputCsv -NoTypeInformation
+# 5. Display results and export to CSV
+$Results | Format-Table -AutoSize
 
-Write-Host "Audit complete. Results saved to $OutputCsv" -ForegroundColor Green
+$Results | Export-Csv -Path $CsvOutputPath -NoTypeInformation -Encoding UTF8
+
+Write-Host "Export complete: $CsvOutputPath" -ForegroundColor Green
